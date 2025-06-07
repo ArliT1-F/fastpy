@@ -1,10 +1,10 @@
 [package]
 name = "fastpy"
 version = "0.1.0"
-edition = "2025"
+edition = "2024"
 
 [dependencies]
-tree-sitter = "0.20"
-tree-sitter-python = "0.20"
+tree-sitter = "0.20.0"
+tree-sitter-python = "0.20.0"
 clap = { version = "4.0", features = ["derive"] }
 rayon = "1.7" # for parallel processing
