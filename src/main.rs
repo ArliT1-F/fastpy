@@ -58,6 +58,12 @@ fn parse_code(code: &str) -> Option<Tree> {
 
 fn run_linter(tree: &Tree, source_code: &str, config: &LintConfig) -> Vec<LintMessage> {
     let mut messages = Vec::new();
+    messages.extend(lint_ambiguous_names(tree, source_code, config));
+    messages
+}
+
+fn lint_ambiguous_names(tree: &Tree, source_code: &str, config: &LintConfig) -> Vec<LintMessage> {
+    let mut messages = Vec::new();
     let root = tree.root_node();
     let mut cursor = root.walk();
 
