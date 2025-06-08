@@ -1,3 +1,4 @@
+use log::{info, warn, error, debug};
 use clap::Parser;
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -123,6 +124,7 @@ fn find_python_files(dir: &Path) -> Vec<PathBuf> {
 }
 
 fn main() {
+    env_logger::init();
     let args = Args::parse();
 
     let paths = if args.file.is_dir() {
@@ -132,7 +134,7 @@ fn main() {
     };
 
     for path in paths {
-        println!("\n📂 Processing {:?}", path);
+        info!("\n📂 Processing {:?}", path);
 
         let code = fs::read_to_string(&path).expect("Unable to read file");
         let config = load_config(&path).unwrap_or_default();
@@ -156,19 +158,19 @@ fn main() {
 
             let fixes = find_fixes(&tree, &code);
             if !fixes.is_empty() {
-                println!("\n✏️ Auto-fixes available:");
+                info!("\n✏️ Auto-fixes available:");
                 for fix in &fixes {
-                    println!("{:?}", fix);
+                    info!("{:?}", fix);
                 }
 
                 let fixed_code = apply_fixes(&code, fixes);
                 if args.fix {
                     fs::write(&path, &fixed_code).expect("Failed to write fixed file");
-                    println!("✅ Auto-fixed and saved");
+                    info!("✅ Auto-fixed and saved");
                 }
             }
         } else {
-            eprintln!("❌ Failed to parse {:?}", path);
+            error!("❌ Failed to parse {:?}", path);
         }
     }
 }
