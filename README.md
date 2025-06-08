@@ -21,3 +21,42 @@ It uses [tree-sitter](https://tree-sitter.github.io/) to parse Python syntax at 
 git clone https://github.com/yourname/fastpy
 cd fastpy
 cargo build --release
+```
+
+## Usage
+```bash
+fastpy <file.py> [OPTIONS]
+```
+### Options:
+- `-f`, `--format` ---> Print formatted code to stdout
+- `-x`, `--fix` ---> Apply formatting directly to the file
+- `-d`, `--debug` ---> Print the parse tree for debugging
+
+### Example:
+```bash
+fastpy example.py --format
+fastpy script.py --fix
+fastpy test.py --debug
+```
+
+### Example Output:
+```bash
+--- Running Linter ---
+[Lint] Variable name 'l' is ambiguous (line 4)
+[Lint] Variable name 'O' is ambiguous (line 12)
+
+--- Formatted Code ---
+def test():
+    print("cleaned up")
+
+✅ File formatted and saved: "test.py"
+```
+
+## Roadmap
+- Auto-fix common issues
+- Configurable linter rules
+- Support for entire directories
+- JSON output for integrations
+
+## Licence
+MIT

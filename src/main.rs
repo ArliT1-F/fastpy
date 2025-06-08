@@ -43,7 +43,7 @@ fn main() {
     let formatted = format_code(&code);
 
     if args.format {
-        println!("\n--- Formatted Code ---\n{}"," + " formatted);
+        println!("\n--- Formatted Code ---\n{}", formatted);
     }
 
     if args.fix {
