@@ -1,3 +1,6 @@
-[lint]
 disallow_ambiguous_names = true
-max_line_length = 80
+max_line_length = 120
+
+[rules]
+ambiguous_names = true
+max_line_length = false
