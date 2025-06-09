@@ -39,8 +39,14 @@ struct Fix {
 #[derive(Deserialize, Default)]
 struct LintConfig {
     disallow_ambiguous_names: Option<bool>,
-    #[allow(dead_code)]
     max_line_length: Option<usize>,
+    rules: Option<RulesConfig>,
+}
+
+#[derive(Deserialize, Default)]
+struct RulesConfig {
+    ambiguous_names: Option<bool>,
+    max_line_length: Option<bool>,
 }
 
 fn load_config(path: &Path) -> Option<LintConfig> {
@@ -58,7 +64,18 @@ fn parse_code(code: &str) -> Option<Tree> {
 
 fn run_linter(tree: &Tree, source_code: &str, config: &LintConfig) -> Vec<LintMessage> {
     let mut messages = Vec::new();
-    messages.extend(lint_ambiguous_names(tree, source_code, config));
+
+    // Run ambiguous names lint only if enabled in config
+    let ambiguous_names_enabled = config.rules
+        .as_ref()
+        .and_then(|r| r.ambiguous_names)
+        .unwrap_or(config.disallow_ambiguous_names.unwrap_or(true));
+    if ambiguous_names_enabled {
+        messages.extend(lint_ambiguous_names(tree, source_code, config));
+    }
+
+    // You can add more rules here in the future, following the same pattern.
+
     messages
 }
 
